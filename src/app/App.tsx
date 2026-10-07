@@ -1,3 +1,5 @@
+import { Button } from "@/shared/ui/button"
+
 function App() {
   return (
     <div className="min-h-screen bg-wa-bg flex items-center justify-center">
@@ -8,6 +10,7 @@ function App() {
         <p className="text-gray-600 mt-2">
           Проект в разработке
         </p>
+        <Button>asdasd</Button>
       </div>
     </div>
   );
