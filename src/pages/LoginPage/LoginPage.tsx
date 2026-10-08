@@ -1,7 +1,76 @@
+import { useState, type FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAppStore } from '@/store/useAppStore'
+import { Button } from '@/shared/ui/button'
+import { Input } from '@/shared/ui/input'
+import { Alert, AlertDescription } from '@/shared/ui/alert'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/shared/ui/card'
+
 export function LoginPage() {
+  const navigate = useNavigate()
+  const login = useAppStore((s) => s.login)
+  const authStatus = useAppStore((s) => s.authStatus)
+  const authError = useAppStore((s) => s.authError)
+
+  const [idInstance, setIdInstance] = useState('')
+  const [apiTokenInstance, setApiTokenInstance] = useState('')
+
+  const isLoading = authStatus === 'checking'
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    const success = await login(idInstance.trim(), apiTokenInstance.trim())
+    if (success) {
+      navigate('/chat')
+    }
+  }
+
   return (
-    <div className="bg-wa-bg flex min-h-screen items-center justify-center p-4">
-      <h1 className="text-wa-dark text-2xl font-bold">Login Page</h1>
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md border-border bg-card">
+        <CardHeader>
+          <CardTitle className="text-2xl">Вход в GREEN-API</CardTitle>
+          <CardDescription>
+            Введите параметры доступа из личного кабинета
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <Input
+              type="text"
+              placeholder="idInstance"
+              value={idInstance}
+              onChange={(e) => setIdInstance(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+            <Input
+              type="password"
+              placeholder="apiTokenInstance"
+              value={apiTokenInstance}
+              onChange={(e) => setApiTokenInstance(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+
+            {authError && (
+              <Alert variant="destructive">
+                <AlertDescription>{authError}</AlertDescription>
+              </Alert>
+            )}
+
+            <Button type="submit" disabled={isLoading} className="w-full">
+              {isLoading ? 'Проверка…' : 'Войти'}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }

@@ -1,13 +1,13 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { getStateInstance } from '@/shared/api/greenApi'
+import { getStateInstance, setSettings } from '@/shared/api/greenApi'
 import { ApiError } from '@/shared/api/ApiError'
+import { resolveApiUrl } from '@/shared/lib/resolveApiUrl'
 import type { ChatMessage } from '@/shared/types'
 
 type AuthStatus = 'idle' | 'checking' | 'authorized' | 'error'
 
 interface AppState {
-  apiUrl: string
   idInstance: string
   apiTokenInstance: string
   authStatus: AuthStatus
@@ -15,11 +15,7 @@ interface AppState {
   chatId: string | null
   messages: ChatMessage[]
 
-  login: (
-    apiUrl: string,
-    idInstance: string,
-    apiTokenInstance: string
-  ) => Promise<boolean>
+  login: (idInstance: string, apiTokenInstance: string) => Promise<boolean>
   logout: () => void
   setChatId: (chatId: string) => void
   addMessage: (message: ChatMessage) => void
@@ -29,7 +25,6 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
-      apiUrl: '',
       idInstance: '',
       apiTokenInstance: '',
       authStatus: 'idle',
@@ -37,30 +32,38 @@ export const useAppStore = create<AppState>()(
       chatId: null,
       messages: [],
 
-      login: async (apiUrl, idInstance, apiTokenInstance) => {
+      login: async (idInstance, apiTokenInstance) => {
         set({ authStatus: 'checking', authError: null })
         try {
+          const apiUrl = resolveApiUrl(idInstance)
+
           const { stateInstance } = await getStateInstance(
             apiUrl,
             idInstance,
             apiTokenInstance
           )
 
-          if (stateInstance === 'authorized') {
+          if (stateInstance !== 'authorized') {
             set({
-              apiUrl,
-              idInstance,
-              apiTokenInstance,
-              authStatus: 'authorized',
+              authStatus: 'error',
+              authError: `Инстанс не авторизован. Статус: ${stateInstance}`,
             })
-            return true
+            return false
           }
 
-          set({
-            authStatus: 'error',
-            authError: `Инстанс не авторизован. Статус: ${stateInstance}`,
+          await setSettings(apiUrl, idInstance, apiTokenInstance, {
+            webhookUrl: '',
+            outgoingWebhook: 'yes',
+            stateWebhook: 'yes',
+            incomingWebhook: 'yes',
           })
-          return false
+
+          set({
+            idInstance,
+            apiTokenInstance,
+            authStatus: 'authorized',
+          })
+          return true
         } catch (error: unknown) {
           const message =
             error instanceof ApiError
@@ -73,7 +76,6 @@ export const useAppStore = create<AppState>()(
 
       logout: () =>
         set({
-          apiUrl: '',
           idInstance: '',
           apiTokenInstance: '',
           authStatus: 'idle',
@@ -92,7 +94,6 @@ export const useAppStore = create<AppState>()(
     {
       name: 'green-api-storage',
       partialize: (state) => ({
-        apiUrl: state.apiUrl,
         idInstance: state.idInstance,
         apiTokenInstance: state.apiTokenInstance,
         chatId: state.chatId,
