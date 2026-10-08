@@ -1,9 +1,4 @@
-export type InstanceState =
-  | 'notAuthorized'
-  | 'authorized'
-  | 'blocked'
-  | 'sleepMode'
-  | 'starting'
+export type InstanceState = 'notAuthorized' | 'authorized' | 'blocked' | 'sleepMode' | 'starting'
 
 export interface InstanceStateResponse {
   stateInstance: InstanceState

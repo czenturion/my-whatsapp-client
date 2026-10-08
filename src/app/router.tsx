@@ -1,14 +1,14 @@
-import { createBrowserRouter } from "react-router-dom"
-import { LoginPage } from "@/pages/LoginPage/LoginPage"
-import { ChatPage } from "@/pages/ChatPage/ChatPage"
+import { createBrowserRouter } from 'react-router-dom'
+import { LoginPage } from '@/pages/LoginPage/LoginPage'
+import { ChatPage } from '@/pages/ChatPage/ChatPage'
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <LoginPage />,
   },
   {
-    path: "/chat",
+    path: '/chat',
     element: <ChatPage />,
   },
 ])
