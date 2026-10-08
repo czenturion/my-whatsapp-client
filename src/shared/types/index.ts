@@ -48,3 +48,14 @@ export interface ChatMessage {
   isOutgoing: boolean
   senderName?: string
 }
+
+export interface SetSettingsRequest {
+  webhookUrl: string
+  outgoingWebhook: 'yes' | 'no'
+  stateWebhook: 'yes' | 'no'
+  incomingWebhook: 'yes' | 'no'
+}
+
+export interface SetSettingsResponse {
+  saveSettings: boolean
+}

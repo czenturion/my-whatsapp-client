@@ -5,6 +5,8 @@ import type {
   SendMessageRequest,
   SendMessageResponse,
   ReceiveNotificationResponse,
+  SetSettingsRequest,
+  SetSettingsResponse,
 } from '@/shared/types'
 
 const httpClient: AxiosInstance = axios.create({
@@ -86,4 +88,19 @@ export const deleteNotification = async (
     buildUrl(apiUrl, idInstance, 'deleteNotification', apiTokenInstance, String(receiptId)),
     { signal }
   )
+}
+
+export const setSettings = async (
+  apiUrl: string,
+  idInstance: string,
+  apiTokenInstance: string,
+  payload: SetSettingsRequest,
+  signal?: AbortSignal
+): Promise<SetSettingsResponse> => {
+  const { data } = await httpClient.post<SetSettingsResponse>(
+    buildUrl(apiUrl, idInstance, 'setSettings', apiTokenInstance),
+    payload,
+    { signal }
+  )
+  return data
 }
