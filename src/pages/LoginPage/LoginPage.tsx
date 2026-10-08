@@ -4,13 +4,7 @@ import { useAppStore } from '@/store/useAppStore'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import { Alert, AlertDescription } from '@/shared/ui/alert'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/shared/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card'
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -32,13 +26,11 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md border-border bg-card">
+    <div className="bg-background flex min-h-screen items-center justify-center p-4">
+      <Card className="border-border bg-card w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Вход в GREEN-API</CardTitle>
-          <CardDescription>
-            Введите параметры доступа из личного кабинета
-          </CardDescription>
+          <CardDescription>Введите параметры доступа из личного кабинета</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">

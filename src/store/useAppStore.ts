@@ -37,11 +37,7 @@ export const useAppStore = create<AppState>()(
         try {
           const apiUrl = resolveApiUrl(idInstance)
 
-          const { stateInstance } = await getStateInstance(
-            apiUrl,
-            idInstance,
-            apiTokenInstance
-          )
+          const { stateInstance } = await getStateInstance(apiUrl, idInstance, apiTokenInstance)
 
           if (stateInstance !== 'authorized') {
             set({
@@ -66,9 +62,7 @@ export const useAppStore = create<AppState>()(
           return true
         } catch (error: unknown) {
           const message =
-            error instanceof ApiError
-              ? error.message
-              : 'Не удалось подключиться к GREEN-API'
+            error instanceof ApiError ? error.message : 'Не удалось подключиться к GREEN-API'
           set({ authStatus: 'error', authError: message })
           return false
         }
@@ -86,8 +80,7 @@ export const useAppStore = create<AppState>()(
 
       setChatId: (chatId) => set({ chatId, messages: [] }),
 
-      addMessage: (message) =>
-        set((state) => ({ messages: [...state.messages, message] })),
+      addMessage: (message) => set((state) => ({ messages: [...state.messages, message] })),
 
       clearMessages: () => set({ messages: [] }),
     }),
