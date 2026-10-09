@@ -16,6 +16,7 @@ interface AppState {
   messages: ChatMessage[]
 
   login: (idInstance: string, apiTokenInstance: string) => Promise<boolean>
+  restoreSession: () => Promise<void>
   logout: () => void
   setChatId: (chatId: string) => void
   addMessage: (message: ChatMessage) => void
@@ -24,7 +25,7 @@ interface AppState {
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       idInstance: '',
       apiTokenInstance: '',
       authStatus: 'idle',
@@ -36,7 +37,6 @@ export const useAppStore = create<AppState>()(
         set({ authStatus: 'checking', authError: null })
         try {
           const apiUrl = resolveApiUrl(idInstance)
-
           const { stateInstance } = await getStateInstance(apiUrl, idInstance, apiTokenInstance)
 
           if (stateInstance !== 'authorized') {
@@ -65,6 +65,29 @@ export const useAppStore = create<AppState>()(
             error instanceof ApiError ? error.message : 'Не удалось подключиться к GREEN-API'
           set({ authStatus: 'error', authError: message })
           return false
+        }
+      },
+
+      restoreSession: async () => {
+        const { idInstance, apiTokenInstance, authStatus } = get()
+        if (authStatus !== 'idle' || !idInstance || !apiTokenInstance) return
+
+        set({ authStatus: 'checking' })
+        try {
+          const apiUrl = resolveApiUrl(idInstance)
+          const { stateInstance } = await getStateInstance(apiUrl, idInstance, apiTokenInstance)
+
+          if (stateInstance === 'authorized') {
+            set({ authStatus: 'authorized', authError: null })
+          } else {
+            set({
+              authStatus: 'error',
+              authError: `Статус: ${stateInstance}`,
+            })
+          }
+        } catch (error: unknown) {
+          const message = error instanceof ApiError ? error.message : 'Ошибка восстановления сессии'
+          set({ authStatus: 'error', authError: message })
         }
       },
 
