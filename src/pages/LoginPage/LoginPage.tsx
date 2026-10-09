@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '@/store/useAppStore'
 import { Button } from '@/shared/ui/button'
@@ -17,7 +17,7 @@ export function LoginPage() {
 
   const isLoading = authStatus === 'checking'
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     const success = await login(idInstance.trim(), apiTokenInstance.trim())
     if (success) {

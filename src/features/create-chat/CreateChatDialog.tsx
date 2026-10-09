@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { useAppStore } from '@/store/useAppStore'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
@@ -20,7 +20,7 @@ export function CreateChatDialog({ open, onOpenChange }: CreateChatDialogProps) 
   const setChatId = useAppStore((s) => s.setChatId)
   const [phone, setPhone] = useState('')
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     const cleaned = phone.replace(/\D/g, '')
     if (!cleaned) return
