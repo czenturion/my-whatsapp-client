@@ -65,7 +65,7 @@ export function SendMessageForm() {
         disabled={sending || !chatId}
         className="flex-1"
       />
-      <Button type="submit" size="icon" disabled={sending || !text.trim() || !chatId}>
+      <Button type="submit" size="icon-lg" disabled={sending || !text.trim() || !chatId}>
         <Send className="h-4 w-4" />
       </Button>
     </form>

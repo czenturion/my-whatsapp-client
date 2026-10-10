@@ -28,12 +28,12 @@ export function LoginPage() {
   return (
     <div className="bg-background flex min-h-screen items-center justify-center p-4">
       <Card className="border-border bg-card w-full max-w-md">
-        <CardHeader>
+        <CardHeader className="gap-4">
           <CardTitle className="text-2xl">Вход в GREEN-API</CardTitle>
           <CardDescription>Введите параметры доступа из личного кабинета</CardDescription>
         </CardHeader>
         <CardContent>
-          <form key="login-form" onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form key="login-form" onSubmit={handleSubmit} className="flex flex-col gap-6">
             <Input
               type="text"
               name="idInstance"
@@ -61,7 +61,7 @@ export function LoginPage() {
               </Alert>
             )}
 
-            <Button type="submit" disabled={isLoading} className="w-full">
+            <Button type="submit" size="xl" disabled={isLoading} className="w-full">
               {isLoading ? 'Проверка…' : 'Войти'}
             </Button>
           </form>

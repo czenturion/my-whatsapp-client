@@ -10,7 +10,7 @@ export function ChatHeader({ chatId }: ChatHeaderProps) {
   const initials = phone.slice(-2)
 
   return (
-    <div className="border-border bg-max-panel flex items-center gap-3 border-b px-4 py-3">
+    <div className="border-border bg-max-panel flex items-center gap-3 border-b px-4 py-4">
       <Avatar className="h-10 w-10">
         <AvatarFallback className="bg-primary text-primary-foreground">{initials}</AvatarFallback>
       </Avatar>
