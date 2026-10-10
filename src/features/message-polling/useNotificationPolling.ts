@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { receiveNotification, deleteNotification } from '@/shared/api/greenApi'
 
 export interface IncomingMessage {
+  idMessage: string
   chatId: string
   text: string
   timestamp: number
@@ -59,6 +60,7 @@ export function useNotificationPolling({
             body.messageData.textMessageData
           ) {
             callbackRef.current({
+              idMessage: body.idMessage,
               chatId: body.senderData.chatId,
               text: body.messageData.textMessageData.textMessage,
               timestamp: body.timestamp,

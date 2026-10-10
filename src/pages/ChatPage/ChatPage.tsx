@@ -31,7 +31,7 @@ export function ChatPage() {
     onIncomingMessage: (msg) => {
       if (msg.chatId !== chatId) return
       addMessage({
-        id: `${msg.chatId}-${msg.timestamp}`,
+        id: msg.idMessage,
         chatId: msg.chatId,
         text: msg.text,
         timestamp: msg.timestamp,
