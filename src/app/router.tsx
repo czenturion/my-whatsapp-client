@@ -1,14 +1,23 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { LoginPage } from '@/pages/LoginPage/LoginPage'
 import { ChatPage } from '@/pages/ChatPage/ChatPage'
+import { RequireAuth, RequireGuest } from './ProtectedRoute'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <LoginPage />,
+    element: (
+      <RequireGuest>
+        <LoginPage />
+      </RequireGuest>
+    ),
   },
   {
     path: '/chat',
-    element: <ChatPage />,
+    element: (
+      <RequireAuth>
+        <ChatPage />
+      </RequireAuth>
+    ),
   },
 ])
