@@ -14,7 +14,7 @@ export function MessageList({ messages }: MessageListProps) {
   }, [messages.length])
 
   return (
-    <div className="bg-max-chat-bg flex flex-1 flex-col gap-2 overflow-y-auto px-4 py-4">
+    <div className="bg-max-chat-bg scrollbar-max flex flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto px-12 py-5">
       {messages.length === 0 ? (
         <div className="flex flex-1 items-center justify-center">
           <p className="text-muted-foreground text-sm">Нет сообщений. Отправьте первое!</p>

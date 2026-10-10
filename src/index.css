@@ -68,3 +68,32 @@
     margin: 0;
   }
 }
+
+@layer utilities {
+  .scrollbar-max {
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a3e transparent;
+  }
+
+  .scrollbar-max::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-max::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-max::-webkit-scrollbar-thumb {
+    background-color: #2a2a3e;
+    border-radius: 4px;
+  }
+
+  .scrollbar-max::-webkit-scrollbar-thumb:hover {
+    background-color: #3a3a52;
+  }
+
+  .scrollbar-max::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}

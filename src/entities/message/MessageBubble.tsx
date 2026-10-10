@@ -21,7 +21,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
             : 'bg-max-bubble-in text-foreground rounded-bl-sm'
         )}
       >
-        <p className="wrap-break-word whitespace-pre-wrap">{message.text}</p>
+        <p className="wrap-anywhere whitespace-pre-wrap">{message.text}</p>
         <span className="mt-1 block text-right text-[10px] text-white/60">{time}</span>
       </div>
     </div>
