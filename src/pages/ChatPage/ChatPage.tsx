@@ -42,7 +42,7 @@ export function ChatPage() {
     <div className="bg-background flex h-screen">
       {/* Левая панель — список чатов */}
       <aside className="border-border bg-max-panel flex w-80 shrink-0 flex-col border-r">
-        <div className="border-border flex items-center justify-between border-b px-4 py-3">
+        <div className="border-border flex items-center justify-between border-b px-4 py-4">
           <h1 className="text-lg font-semibold">Чаты</h1>
           <Button size="icon" variant="ghost" onClick={() => setDialogOpen(true)}>
             <Plus className="h-5 w-5" />
