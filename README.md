@@ -66,4 +66,4 @@ src/
 
 ## Демо
 
-🔗 [Ссылка на деплой](#)
+🔗 [my-whatsapp-client.vercel.app](https://my-whatsapp-client.vercel.app/)
