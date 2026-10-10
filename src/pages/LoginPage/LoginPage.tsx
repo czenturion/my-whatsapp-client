@@ -33,10 +33,12 @@ export function LoginPage() {
           <CardDescription>Введите параметры доступа из личного кабинета</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form key="login-form" onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Input
               type="text"
+              name="idInstance"
               placeholder="idInstance"
+              autoComplete="on"
               value={idInstance}
               onChange={(e) => setIdInstance(e.target.value)}
               required
@@ -44,6 +46,8 @@ export function LoginPage() {
             />
             <Input
               type="password"
+              name="apiTokenInstance"
+              autoComplete="off"
               placeholder="apiTokenInstance"
               value={apiTokenInstance}
               onChange={(e) => setApiTokenInstance(e.target.value)}

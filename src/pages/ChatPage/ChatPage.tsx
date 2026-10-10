@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, LogOut } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '@/store/useAppStore'
 import { resolveApiUrl } from '@/shared/lib/resolveApiUrl'
 import { useNotificationPolling } from '@/features/message-polling/useNotificationPolling'
@@ -11,12 +12,14 @@ import { MessageList } from '@/entities/message/MessageList'
 import { Button } from '@/shared/ui/button'
 
 export function ChatPage() {
+  const navigate = useNavigate()
   const idInstance = useAppStore((s) => s.idInstance)
   const apiTokenInstance = useAppStore((s) => s.apiTokenInstance)
   const authStatus = useAppStore((s) => s.authStatus)
   const chatId = useAppStore((s) => s.chatId)
   const messages = useAppStore((s) => s.messages)
   const addMessage = useAppStore((s) => s.addMessage)
+  const logout = useAppStore((s) => s.logout)
 
   const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -38,15 +41,37 @@ export function ChatPage() {
     },
   })
 
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
+
   return (
     <div className="bg-background flex h-screen">
       {/* Левая панель — список чатов */}
       <aside className="border-border bg-max-panel flex w-80 shrink-0 flex-col border-r">
         <div className="border-border flex items-center justify-between border-b px-4 py-4">
           <h1 className="text-lg font-semibold">Чаты</h1>
-          <Button size="icon" variant="ghost" onClick={() => setDialogOpen(true)}>
-            <Plus className="h-5 w-5" />
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setDialogOpen(true)}
+              title="Новый чат"
+              aria-label="Новый чат"
+            >
+              <Plus className="h-5 w-5" />
+            </Button>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={handleLogout}
+              title="Выйти"
+              aria-label="Выйти"
+            >
+              <LogOut className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
         <div className="flex-1 overflow-y-auto p-2">
           {chatId ? (
