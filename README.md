@@ -1,73 +1,69 @@
-# React + TypeScript + Vite
+# WhatsApp Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Веб-клиент для отправки и получения сообщений WhatsApp через [GREEN-API](https://green-api.com/). Интерфейс сделан по мотивам [web.max.ru](https://web.max.ru/) — тёмная тема, две колонки, минимализм.
 
-Currently, two official plugins are available:
+## Что умеет
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Логин по `idInstance` и `apiTokenInstance` из кабинета GREEN-API
+- Создание чата по номеру телефона
+- Отправка и приём текстовых сообщений
+- Long-polling для входящих — сообщения подтягиваются сами
+- Сессия и история переживают перезагрузку страницы
 
-## React Compiler
+## Стек
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React 19 + TypeScript, Vite 8, Tailwind CSS 4, shadcn/ui на Base UI, Zustand, React Router, Axios. Архитектура — упрощённый Feature-Sliced Design.
 
-## Expanding the ESLint configuration
+## Запуск
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Нужен Node.js 20.19+ или 22.12+.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/czenturion/my-whatsapp-client.git
+cd my-whatsapp-client
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Откроется на [http://localhost:5173](http://localhost:5173).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Сборка и проверки:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build     # прод-сборка
+npm run lint      # ESLint
+npm run format    # Prettier
 ```
+
+## Как пользоваться
+
+1. Открываешь сайт — попадаешь на страницу входа.
+2. Вводишь `idInstance` и `apiTokenInstance` из [личного кабинета GREEN-API](https://console.green-api.com/).
+3. После входа нажимаешь **+** слева, вводишь номер получателя в международном формате (`79258934848`) — создаётся чат.
+4. Пишешь сообщение, отправляешь.
+5. Ответы приходят автоматически.
+
+Инстанс должен быть авторизован в кабинете GREEN-API. При входе приложение само вызывает `SetSettings` с пустым `webhookUrl`, чтобы перевести инстанс в режим HTTP API — иначе входящие не будут доходить.
+
+## Структура
+
+```
+src/
+├── app/          # точка входа, роутер
+├── pages/        # LoginPage, ChatPage
+├── features/     # create-chat, send-message, message-polling
+├── entities/     # chat, message
+├── shared/       # api, lib, types, ui
+├── store/        # zustand
+└── index.css     # tailwind + тема
+```
+
+## Что под капотом
+
+Используются методы GREEN-API: `GetStateInstance`, `SetSettings`, `SendMessage`, `ReceiveNotification`, `DeleteNotification`.
+
+Лонг-поллинг реализован через `AbortController` — при размонтировании компонента текущий запрос отменяется, утечек нет.
+
+## Демо
+
+🔗 [Ссылка на деплой](#)

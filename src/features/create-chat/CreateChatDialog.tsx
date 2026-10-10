@@ -43,7 +43,7 @@ export function CreateChatDialog({ open, onOpenChange }: CreateChatDialogProps) 
           <div className="py-4">
             <Input
               type="tel"
-              placeholder="79258934848"
+              placeholder="79991234567"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               autoFocus
