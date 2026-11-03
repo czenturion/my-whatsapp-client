@@ -1,22 +1,24 @@
 # WhatsApp Client
 
-Веб-клиент для отправки и получения сообщений WhatsApp через [GREEN-API](https://green-api.com/). Интерфейс сделан по мотивам [web.max.ru](https://web.max.ru/) — тёмная тема, две колонки, минимализм.
+Web client for sending and receiving WhatsApp messages through [GREEN-API](https://green-api.com/). The interface is inspired by [web.max.ru](https://web.max.ru/): dark theme, two columns, minimalism.
 
-## Что умеет
+**Demo:** [my-whatsapp-client.vercel.app](https://my-whatsapp-client.vercel.app/)
 
-- Логин по `idInstance` и `apiTokenInstance` из кабинета GREEN-API
-- Создание чата по номеру телефона
-- Отправка и приём текстовых сообщений
-- Long-polling для входящих — сообщения подтягиваются сами
-- Сессия и история переживают перезагрузку страницы
+## Features
 
-## Стек
+- Sign in with `idInstance` and `apiTokenInstance` from the GREEN-API console
+- Start a chat by phone number
+- Send and receive text messages
+- Long-polling for incoming messages, so new messages appear on their own
+- Session and chat history survive a page reload
 
-React 19 + TypeScript, Vite 8, Tailwind CSS 4, shadcn/ui на Base UI, Zustand, React Router, Axios. Архитектура — упрощённый Feature-Sliced Design.
+## Stack
 
-## Запуск
+React 19, TypeScript, Vite 8, Tailwind CSS 4, shadcn/ui (Base UI), Zustand, React Router, Axios. Architecture: simplified Feature-Sliced Design.
 
-Нужен Node.js 20.19+ или 22.12+.
+## Run locally
+
+Requires Node.js 20.19+ or 22.12+.
 
 ```bash
 git clone https://github.com/czenturion/my-whatsapp-client.git
@@ -25,45 +27,41 @@ npm install
 npm run dev
 ```
 
-Откроется на [http://localhost:5173](http://localhost:5173).
+Opens at [http://localhost:5173](http://localhost:5173).
 
-Сборка и проверки:
+Build and checks:
 
 ```bash
-npm run build     # прод-сборка
+npm run build     # production build
 npm run lint      # ESLint
 npm run format    # Prettier
 ```
 
-## Как пользоваться
+## How to use
 
-1. Открываешь сайт — попадаешь на страницу входа.
-2. Вводишь `idInstance` и `apiTokenInstance` из [личного кабинета GREEN-API](https://console.green-api.com/).
-3. После входа нажимаешь **+** слева, вводишь номер получателя в международном формате (`79258934848`) — создаётся чат.
-4. Пишешь сообщение, отправляешь.
-5. Ответы приходят автоматически.
+1. Open the app, you land on the sign-in page.
+2. Enter `idInstance` and `apiTokenInstance` from the [GREEN-API console](https://console.green-api.com/).
+3. Click **+** on the left and enter the recipient's number in international format, digits only (`79991234567`). A chat is created.
+4. Type a message and send it.
+5. Replies arrive automatically.
 
-Инстанс должен быть авторизован в кабинете GREEN-API. При входе приложение само вызывает `SetSettings` с пустым `webhookUrl`, чтобы перевести инстанс в режим HTTP API — иначе входящие не будут доходить.
+The instance must be authorized in the GREEN-API console. On sign-in the app calls `SetSettings` with an empty `webhookUrl` to switch the instance to HTTP API mode, otherwise incoming messages would not arrive.
 
-## Структура
+## Project structure
 
 ```
 src/
-├── app/          # точка входа, роутер
+├── app/          # entry point, router
 ├── pages/        # LoginPage, ChatPage
 ├── features/     # create-chat, send-message, message-polling
 ├── entities/     # chat, message
 ├── shared/       # api, lib, types, ui
 ├── store/        # zustand
-└── index.css     # tailwind + тема
+└── index.css     # tailwind + theme
 ```
 
-## Что под капотом
+## Under the hood
 
-Используются методы GREEN-API: `GetStateInstance`, `SetSettings`, `SendMessage`, `ReceiveNotification`, `DeleteNotification`.
+GREEN-API methods used: `GetStateInstance`, `SetSettings`, `SendMessage`, `ReceiveNotification`, `DeleteNotification`.
 
-Лонг-поллинг реализован через `AbortController` — при размонтировании компонента текущий запрос отменяется, утечек нет.
-
-## Демо
-
-🔗 [my-whatsapp-client.vercel.app](https://my-whatsapp-client.vercel.app/)
+Long-polling uses `AbortController`: when the component unmounts, the pending request is cancelled, so nothing leaks.
